@@ -1,20 +1,28 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity, Alert, StyleSheet,Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
+    <View style={styles.home}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => Alert.alert('Button clicked!')}
+      >
+        <Image
+          style={styles.addButtonImage}    
+          source={require('./assets/plus.png')}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={styles.settings}>
       <Text>Settings!</Text>
     </View>
   );
@@ -59,3 +67,29 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  home: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
+  },
+  addButton: {
+    borderRadius: 30,
+    height: 60,
+    width: 60,
+    backgroundColor: '#ccffff',
+    padding: 5,
+    margin: 15
+  },
+  addButtonImage: {
+    flex: 1,
+    width: undefined,
+    height: undefined
+  },
+  settings: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+});
