@@ -1,22 +1,56 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Alert, StyleSheet,Image } from 'react-native';
+import { Text, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList, CheckBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 function HomeScreen() {
+  const completed = false;
   return (
-    <View style={styles.home}>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => Alert.alert('Button clicked!')}
-      >
-        <Image
-          style={styles.addButtonImage}    
-          source={require('./assets/plus.png')}
+    <>
+      <View style={{flex: 1}}>
+        <FlatList
+          data={[
+            {key: 'Devin'},
+            {key: 'Dan'},
+            {key: 'Dominic'},
+            {key: 'Jackson'},
+            {key: 'James'},
+            {key: 'Joel'},
+            {key: 'John'},
+            {key: 'Jillian'},
+            {key: 'Jimmy'},
+            {key: 'Julie'},
+          ]}
+          renderItem={({item}) => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <CheckBox
+                checked = {completed}
+                onChange = {() => Alert.alert('Checked!')}
+              />
+              <Text>{item.key}</Text>
+                <TouchableOpacity
+                  style={{position:'absolute', right: 0, backgroundColor: '#ddd', padding: 10}}
+                  onPress={() => Alert.alert('Deleted!')}
+                >
+                </TouchableOpacity>
+            </View>
+          )}
         />
-      </TouchableOpacity>
-    </View>
+      </View>
+
+      <View style={styles.home}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => Alert.alert('Button clicked!')}
+        >
+          <Image
+            style={styles.addButtonImage}    
+            source={require('./assets/plus.png')}
+          />
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }
 
@@ -70,17 +104,18 @@ export default function App() {
 
 const styles = StyleSheet.create({
   home: {
-    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end'
   },
   addButton: {
+    position: 'absolute',
     borderRadius: 30,
     height: 60,
     width: 60,
     backgroundColor: '#ccffff',
     padding: 5,
-    margin: 15
+    right: 15,
+    bottom: 15
   },
   addButtonImage: {
     flex: 1,
