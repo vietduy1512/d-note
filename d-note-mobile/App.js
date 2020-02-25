@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList, CheckBox } from 'react-native';
+import { Text, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList } from 'react-native';
+import { CheckBox } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,12 +22,22 @@ function HomeScreen() {
             {key: 'Jillian'},
             {key: 'Jimmy'},
             {key: 'Julie'},
+            {key: 'Devin'},
+            {key: 'Dan'},
+            {key: 'Dominic'},
+            {key: 'Jackson'},
+            {key: 'James'},
+            {key: 'Joel'},
+            {key: 'John'},
+            {key: 'Jillian'},
+            {key: 'Jimmy'},
+            {key: 'Julie'},
           ]}
           renderItem={({item}) => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ddd'}}>
               <CheckBox
                 checked = {completed}
-                onChange = {() => Alert.alert('Checked!')}
+                onPress = {() => Alert.alert('Checked!')}
               />
               <Text>{item.key}</Text>
                 <TouchableOpacity
