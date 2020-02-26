@@ -1,27 +1,21 @@
-import * as React from 'react';
-import { Text, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList } from 'react-native';
+import React from 'react';
+import { Text, TextInput, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
-function HomeScreen() {
+const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator()
+
+function TodoList({ navigation }) {
   const completed = false;
   return (
     <>
       <View style={{flex: 1}}>
         <FlatList
           data={[
-            {key: 'Devin'},
-            {key: 'Dan'},
-            {key: 'Dominic'},
-            {key: 'Jackson'},
-            {key: 'James'},
-            {key: 'Joel'},
-            {key: 'John'},
-            {key: 'Jillian'},
-            {key: 'Jimmy'},
-            {key: 'Julie'},
             {key: 'Devin'},
             {key: 'Dan'},
             {key: 'Dominic'},
@@ -53,7 +47,7 @@ function HomeScreen() {
       <View style={styles.home}>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => Alert.alert('Button clicked!')}
+          onPress={() => navigation.navigate('Add Todo')}
         >
           <Image
             style={styles.addButtonImage}    
@@ -62,7 +56,31 @@ function HomeScreen() {
         </TouchableOpacity>
       </View>
     </>
-  );
+  )
+}
+
+function AddTodo() {
+  const [content, setContent] = React.useState();
+
+  return (
+    <View style={{flex: 1, alignItems: 'center'}}>
+      <TextInput
+          style={{padding: 15, width: '100%', textAlign: 'center', borderColor: '#8842d5', borderWidth: 1}}
+          placeholder="Type here to translate!"
+          onChangeText={(text) => setContent(text)}
+          value={content}
+        />
+    </View>
+  )
+}
+
+function HomeScreen() {
+  return (
+    <HomeStack.Navigator initialRouteName="Home">
+      <HomeStack.Screen name="Todo List" component={TodoList} />
+      <HomeStack.Screen name="Add Todo" component={AddTodo} />
+    </HomeStack.Navigator>
+  )
 }
 
 function SettingsScreen() {
@@ -73,7 +91,6 @@ function SettingsScreen() {
   );
 }
 
-const Tab = createBottomTabNavigator();
 
 const screenOptions = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
