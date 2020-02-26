@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, TextInput, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList } from 'react-native';
+import * as React from 'react';
+import { Text, TextInput, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList, AsyncStorage } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7,33 +7,32 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
-const HomeStack = createStackNavigator()
+const HomeStack = createStackNavigator();
+
+const NOTE_LIST_DATA = 'NOTE_LIST_DATA'
 
 function TodoList({ navigation }) {
-  const completed = false;
+  let [notes, setNotes] = React.useState([{content: 'Default note'}]);
+
+  let updateNotes = async () => {
+    notes = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
+    setNotes(notes);
+  };
+  updateNotes();
+
+  let completed = false;
   return (
     <>
       <View style={{flex: 1}}>
         <FlatList
-          data={[
-            {key: 'Devin'},
-            {key: 'Dan'},
-            {key: 'Dominic'},
-            {key: 'Jackson'},
-            {key: 'James'},
-            {key: 'Joel'},
-            {key: 'John'},
-            {key: 'Jillian'},
-            {key: 'Jimmy'},
-            {key: 'Julie'},
-          ]}
+          data={notes}
           renderItem={({item}) => (
             <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ddd'}}>
               <CheckBox
                 checked = {completed}
                 onPress = {() => Alert.alert('Checked!')}
               />
-              <Text>{item.key}</Text>
+              <Text>{item.content}</Text>
                 <TouchableOpacity
                   style={{position:'absolute', right: 0, backgroundColor: '#ddd', padding: 10}}
                   onPress={() => Alert.alert('Deleted!')}
@@ -51,7 +50,7 @@ function TodoList({ navigation }) {
         >
           <Image
             style={styles.addButtonImage}    
-            source={require('./assets/plus.png')}
+            source={require('./assets/add.png')}
           />
         </TouchableOpacity>
       </View>
@@ -59,7 +58,7 @@ function TodoList({ navigation }) {
   )
 }
 
-function AddTodo() {
+function AddTodo({navigation}) {
   const [content, setContent] = React.useState();
 
   return (
@@ -70,6 +69,20 @@ function AddTodo() {
           onChangeText={(text) => setContent(text)}
           value={content}
         />
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={async () => {
+          navigation.goBack();
+          let noteList = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
+          noteList.push({content: content});
+          await AsyncStorage.setItem(NOTE_LIST_DATA, JSON.stringify(noteList));
+        }}
+      >
+        <Image
+          style={styles.addButtonImage}    
+          source={require('./assets/ok.png')}
+        />
+      </TouchableOpacity>
     </View>
   )
 }
@@ -137,10 +150,9 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    borderRadius: 30,
-    height: 60,
-    width: 60,
-    backgroundColor: '#ccffff',
+    borderRadius: 40,
+    height: 80,
+    width: 80,
     padding: 5,
     right: 15,
     bottom: 15
