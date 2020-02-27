@@ -5,58 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { Provider } from 'react-redux';
+import store from './src/store';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
 const NOTE_LIST_DATA = 'NOTE_LIST_DATA'
-
-function TodoList({ navigation }) {
-  let [notes, setNotes] = React.useState([{content: 'Default note'}]);
-
-  let updateNotes = async () => {
-    notes = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
-    setNotes(notes);
-  };
-  updateNotes();
-
-  let completed = false;
-  return (
-    <>
-      <View style={{flex: 1}}>
-        <FlatList
-          data={notes}
-          renderItem={({item}) => (
-            <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ddd'}}>
-              <CheckBox
-                checked = {completed}
-                onPress = {() => Alert.alert('Checked!')}
-              />
-              <Text>{item.content}</Text>
-                <TouchableOpacity
-                  style={{position:'absolute', right: 0, backgroundColor: '#ddd', padding: 10}}
-                  onPress={() => Alert.alert('Deleted!')}
-                >
-                </TouchableOpacity>
-            </View>
-          )}
-        />
-      </View>
-
-      <View style={styles.home}>
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => navigation.navigate('Add Todo')}
-        >
-          <Image
-            style={styles.addButtonImage}    
-            source={require('./assets/add.png')}
-          />
-        </TouchableOpacity>
-      </View>
-    </>
-  )
-}
 
 function AddTodo({navigation}) {
   const [content, setContent] = React.useState();
@@ -73,9 +28,13 @@ function AddTodo({navigation}) {
         style={styles.addButton}
         onPress={async () => {
           navigation.goBack();
-          let noteList = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
-          noteList.push({content: content});
-          await AsyncStorage.setItem(NOTE_LIST_DATA, JSON.stringify(noteList));
+          // let noteList = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
+          // if (noteList) {
+          //   noteList.push({content: content});
+          // } else {
+          //   noteList = [{content: content}]
+          // }
+          // await AsyncStorage.setItem(NOTE_LIST_DATA, JSON.stringify(noteList));
         }}
       >
         <Image
@@ -131,15 +90,17 @@ const tabBarOptions = {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={screenOptions}
-        tabBarOptions={tabBarOptions}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={screenOptions}
+          tabBarOptions={tabBarOptions}
+        >
+          <Tab.Screen name="Home" component={HomeScreen} />
+          <Tab.Screen name="Settings" component={SettingsScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
