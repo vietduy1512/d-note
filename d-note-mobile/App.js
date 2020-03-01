@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { Text, TextInput, View, TouchableOpacity, Alert, StyleSheet, Image, FlatList, AsyncStorage } from 'react-native';
-import { CheckBox } from 'react-native-elements'
+import {
+  Text,
+  View,
+  StyleSheet
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,44 +11,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import TodoList from "./src/components/todo/todoList";
+import AddTodo from "./src/components/todo/addTodo";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
 const NOTE_LIST_DATA = 'NOTE_LIST_DATA';
-
-function AddTodo({navigation}) {
-  const [content, setContent] = React.useState();
-
-  return (
-    <View style={{flex: 1, alignItems: 'center'}}>
-      <TextInput
-          style={{padding: 15, width: '100%', textAlign: 'center', borderColor: '#8842d5', borderWidth: 1}}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => setContent(text)}
-          value={content}
-        />
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={async () => {
-          navigation.goBack();
-          let noteList = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
-          if (noteList) {
-            noteList.push({content: content});
-          } else {
-            noteList = [{content: content}]
-          }
-          await AsyncStorage.setItem(NOTE_LIST_DATA, JSON.stringify(noteList));
-        }}
-      >
-        <Image
-          style={styles.addButtonImage}    
-          source={require('./assets/ok.png')}
-        />
-      </TouchableOpacity>
-    </View>
-  )
-}
 
 function HomeScreen() {
   return (
@@ -64,7 +35,6 @@ function SettingsScreen() {
   );
 }
 
-
 const screenOptions = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName;
@@ -79,7 +49,6 @@ const screenOptions = ({ route }) => ({
       default:
         break;
     }
-
     return <Ionicons name={iconName} size={size} color={color} />;
   },
 })

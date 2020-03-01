@@ -1,8 +1,17 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Alert, Image, FlatList, StyleSheet } from 'react-native';
+import { 
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  Image,
+  FlatList,
+  StyleSheet
+} from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import { fetchNotes } from '../../actions/noteAction'
 import { connect } from 'react-redux';
+
 
 function TodoList(props) {
   React.useEffect(() => {
@@ -48,8 +57,7 @@ function TodoList(props) {
 }
 
 const mapStateToProps = (state) => ({
-  notes: state.notes.items,
-  newNote: state.notes.item
+  notes: state.notes.items
 });
 
 export default connect(mapStateToProps, { fetchNotes })(TodoList);
