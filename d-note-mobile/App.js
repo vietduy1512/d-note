@@ -12,7 +12,7 @@ import TodoList from "./src/components/todo/todoList";
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
-const NOTE_LIST_DATA = 'NOTE_LIST_DATA'
+const NOTE_LIST_DATA = 'NOTE_LIST_DATA';
 
 function AddTodo({navigation}) {
   const [content, setContent] = React.useState();
@@ -29,13 +29,13 @@ function AddTodo({navigation}) {
         style={styles.addButton}
         onPress={async () => {
           navigation.goBack();
-          // let noteList = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
-          // if (noteList) {
-          //   noteList.push({content: content});
-          // } else {
-          //   noteList = [{content: content}]
-          // }
-          // await AsyncStorage.setItem(NOTE_LIST_DATA, JSON.stringify(noteList));
+          let noteList = JSON.parse(await AsyncStorage.getItem(NOTE_LIST_DATA));
+          if (noteList) {
+            noteList.push({content: content});
+          } else {
+            noteList = [{content: content}]
+          }
+          await AsyncStorage.setItem(NOTE_LIST_DATA, JSON.stringify(noteList));
         }}
       >
         <Image

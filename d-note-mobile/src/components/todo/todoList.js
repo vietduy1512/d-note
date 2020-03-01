@@ -35,7 +35,7 @@ function TodoList(props) {
       <View style={styles.home}>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => props.navigation.navigate('Add Todo')}
+          onPress={() => props.navigation.push('Add Todo')}
         >
           <Image
             style={styles.addButtonImage}    
