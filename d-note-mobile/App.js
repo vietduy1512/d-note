@@ -16,8 +16,6 @@ import AddTodo from "./src/components/todo/addTodo";
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
-const NOTE_LIST_DATA = 'NOTE_LIST_DATA';
-
 function HomeScreen() {
   return (
     <HomeStack.Navigator initialRouteName="Home">

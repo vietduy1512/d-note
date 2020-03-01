@@ -1,8 +1,6 @@
 import { FETCH_NOTE, NEW_NOTE } from "./types";
 import { AsyncStorage } from 'react-native';
-
-
-const NOTE_LIST_DATA = 'NOTE_LIST_DATA';
+import { NOTE_LIST_DATA } from '../constants/common'
 
 export const addNote = (content) => async (dispatch, getState) => {
   let notes = [...getState().notes.items];
