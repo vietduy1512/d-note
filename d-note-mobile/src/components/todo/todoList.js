@@ -9,7 +9,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { CheckBox } from 'react-native-elements'
-import { fetchNotes } from '../../actions/noteAction'
+import { fetchNotes, deleteNote } from '../../actions/noteAction'
 import { connect } from 'react-redux';
 
 
@@ -24,16 +24,16 @@ function TodoList(props) {
       <View style={{flex: 1}}>
         <FlatList
           data={props.notes}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ddd'}}>
               <CheckBox
                 checked = {completed}
-                onPress = {() => Alert.alert('Checked!')}
+                onPress = {() => props.deleteNote(index)}
               />
               <Text>{item.content}</Text>
                 <TouchableOpacity
                   style={{position:'absolute', right: 0, backgroundColor: '#ddd', padding: 10}}
-                  onPress={() => Alert.alert('Deleted!')}
+                  onPress={() => props.deleteNote(index)}
                 >
                 </TouchableOpacity>
             </View>
@@ -60,7 +60,7 @@ const mapStateToProps = (state) => ({
   notes: state.notes.items
 });
 
-export default connect(mapStateToProps, { fetchNotes })(TodoList);
+export default connect(mapStateToProps, { fetchNotes, deleteNote })(TodoList);
 
 const styles = StyleSheet.create({
   home: {

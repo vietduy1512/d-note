@@ -1,2 +1,2 @@
-export const FETCH_NOTE = "FETCH_NOTE";
-export const NEW_NOTE = "NEW_NOTE";
+export const UPDATE_NOTES = "UPDATE_NOTES";
+export const ADD_NEW_NOTE = "ADD_NEW_NOTE";
